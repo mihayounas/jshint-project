@@ -21,6 +21,19 @@ function processOptions(form) {
     return form;
 }
 
+function displayException(data) {
+    let heading = `An Exception Occured`
+    let results = `<div>The Api Returned status code ${data.status_code}</div>`
+
+
+    results += `<div>Error number: <strong>${data.error_no}</strong></div>`
+    results += `<div>Error text: <strong>${data.error}</strong></div>`
+
+    document.getElementById("resultsModalTitle").innerText = heading;
+    document.getElementById("results-content").innerHTML = results;
+    resultsModal.show();
+}
+
 async function postForm(e) {
 
     const form = processOptions(new FormData(document.getElementById("checksform")));
@@ -38,6 +51,7 @@ async function postForm(e) {
     if (response.ok) {
         displayErrors(data);
     } else {
+        displayException(data)
         throw new Error(data.error);
     }
 
@@ -54,6 +68,7 @@ async function getStatus(e) {
     if (response.ok) {
         displayStatus(data);
     } else {
+        displayException(data)
         throw new Error(data.error);
     }
 
